@@ -23,7 +23,7 @@ transform = transforms.Compose([
 ])
 
 # Step 4: Load dataset and get class names
-dataset = datasets.ImageFolder(root=r'D:\intern\l&t\inference\datasets', transform=transform)
+dataset = datasets.ImageFolder(root=r' ', transform=transform) #your dataset folder
 class_names = dataset.classes  # Extract class names from dataset
 
 # Step 5: Split dataset (80% train, 20% validation)
@@ -70,6 +70,6 @@ for epoch in range(5):
             'class_names': class_names,  # Save class names in model checkpoint
             'normalization': {'mean': [0.485, 0.456, 0.406],
                               'std': [0.229, 0.224, 0.225]}
-        }, "building_class.pt")
+        }, "class.pt")
 
 print("Training completed. Best model saved.")
