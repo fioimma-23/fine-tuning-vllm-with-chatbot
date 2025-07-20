@@ -16,8 +16,7 @@ import requests
 def load_model():
     model = models.mobilenet_v3_large()
     model.classifier[3] = nn.Linear(model.classifier[3].in_features, 4)
-    # model.load_state_dict(torch.load("building_classifier.pt", map_location=torch.device("cpu")))
-    checkpoint = torch.load("building_class.pt", map_location=torch.device("cpu"))
+    checkpoint = torch.load("class.pt", map_location=torch.device("cpu"))
     model.load_state_dict(checkpoint['state_dict'])
     class_names = checkpoint['class_names']
     normalization_stats = checkpoint['normalization']
@@ -42,96 +41,8 @@ transform = transforms.Compose([
 # Building Metadata
 # -----------------------
 
-building_info = {
-    "CRR Centre": {
-        "name": "Administrative Office Building (CRR Centre)",
-        "alias": "CRR Centre",
-        "location": "Chennai - L&T Campus",
-        "awards": [
-            "1994 Federation Internationale du Beton (fib) Award"
-        ],
-        "structure": "Square structure lifted above ground on 4 core shafts with deep well foundations. Overlapping 21.6m square superstructures with post-tensioned pyramid bases.",
-        "features": [
-            "Inverted four-sided hollow pyramid base cantilevered 10m",
-            "Precast waffle slabs for flexible floor design",
-            "Entrance unobstructed and open"
-        ],
-        "green_features": [],
-        "notable": "Floating design architecture with massive 5000t load-bearing core pillars"
-    },
-    "EDRC": {
-        "name": "Engineering Design and Research Centre (EDRC)",
-        "alias": "EDRC",
-        "location": "Chennai - L&T Campus",
-        "awards": [
-            "2002 Federation Internationale du Beton (fib) Award",
-            "LEED Silver Rating - USGBC (Existing Building)"
-        ],
-        "structure": "Triangular design with two symmetrical wings on either side of a service core. Built-up area of 8686 sq.m (G+4 floors)",
-        "features": [
-            "Terraced, landscaped sky gardens",
-            "Natural daylight access to floor interiors",
-            "Architectural form blending with structure"
-        ],
-        "green_features": [
-            "LEED-EB Silver Certified Green Building"
-        ],
-        "notable": "Titled 'Tree of Knowledge'"
-    },  
-    "Technology Centre-2": {
-        "name": "Technology Centre II (TCII)",
-        "alias": "Technology Centre-2",
-        "location": "Chennai - L&T Campus",
-        "awards": [
-            "LEED-NC v2.1 Certified Green Building"
-        ],
-        "structure": "Expanding floor plate with central service core, column-free large office spaces, built on 1.5 lakh sq.ft",
-        "features": [
-            "Post-tensioned EPS embedded flat slabs",
-            "RC core + shear wall system on pile foundation",
-            "648 TR centralized air-conditioning with air-cooled screw chillers",
-            "100% power back-up",
-            "Automatic addressable fire detection system"
-        ],
-        "green_features": [
-            "Roof with high albedo (U-value: 0.22 Btu/hr-sqft°F)",
-            "Double glazing & over-deck insulation",
-            "Energy-efficient lighting",
-            "Recycled water for irrigation",
-            "Non-CFC chillers",
-            "Automated flow/flush fixtures",
-            "Building automation for energy and water",
-            "Storm water control",
-            "Water metering"
-        ],
-        "notable": "Flexible to adapt functional changes for 50+ years"
-    },
-    "Technology Centre-3": {
-        "name": "Technology Centre III (TCIII)",
-        "alias": "Technology Centre-3",
-        "location": "Chennai - L&T Campus, rear end",
-        "awards": [
-            "LEED Silver Rating - IGBC (New Construction)",
-            "Ultratech Award for Outstanding Concrete Structure of Tamil Nadu (2011)"
-        ],
-        "structure": "Twin tower (8 floors) with 3-level basement; 8.31 lakh sq.ft total area; 5.5 lakh office space + 2.81 lakh basement",
-        "features": [
-            "Parking for 703 cars, 932 two-wheelers",
-            "Skywalk and top-floor corporate suites",
-            "Canteen, training, business, recreation at ground level"
-        ],
-        "green_features": [
-            "Sensor-controlled water fixtures",
-            "Pervious pavers for storm water",
-            "100% covered & reserved parking for carpools",
-            "High performance glazing",
-            "Ozone-free refrigerant chillers",
-            "Water metering",
-            "Outdoor & indoor air quality monitoring"
-        ],
-        "notable": "State-of-the-art green twin tower with skywalk"
-    }
-}
+class_info = {
+} #your information
 
 # -----------------------
 # Helper Functions
@@ -150,13 +61,6 @@ def predict_building(image, confidence_threshold=0.7):
         return "unknown", confidence
     else:
         return class_names[pred_idx.item()], confidence
-    
-        # if confidence.item() < 0.7:
-        #     return "unknown", confidence.item()
-        # else:
-        #     return class_names[pred.item()], confidence.item()
-    #     _, pred = torch.max(outputs, 1)
-    # return class_names[pred.item()]
 
 def generate_prompt(building, user_question):
     info = building_info[building]
